@@ -1,0 +1,73 @@
+- name: Fail if required variables are not defined
+  assert:
+    that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
+  with_items:
+    - nginx_controller_tarball
+    - nginx_controller_install_path
+    #- nginx_controller_db_host
+    #- nginx_controller_db_user
+    #- nginx_controller_db_password
+    - nginx_controller_configdb_volume_type
+    - nginx_controller_tsdb_volume_type
+    - nginx_controller_smtp_host
+    - nginx_controller_smtp_authentication
+    - nginx_controller_smtp_use_tls
+    - nginx_controller_noreply_address
+    - nginx_controller_fqdn
+    - nginx_controller_organization_name
+    - nginx_controller_admin_firstname
+    - nginx_controller_admin_lastname
+    - nginx_controller_admin_email
+    - nginx_controller_admin_password
+    - nginx_controller_db_enable_ssl
+
+- debug:
+    msg: "{{ nginx_controller_install_path + nginx_controller_tarball }}"
+
+- name: "Controller - Extracting"
+  unarchive:
+    src: "{{ nginx_controller_install_path + nginx_controller_tarball }}"
+    dest: "{{ nginx_controller_install_path }}"
+    remote_src: "{{ nginx_controller_remote_source | default(true) }}"
+
+- slurp: 
+    src: "{{ nginx_controller_install_path }}/controller-installer/files/version.txt"
+  register: version
+
+- set_fact:
+    nginx_controller_version: "{{ ( version['content'] | b64decode ) | regex_replace('(^version:\\s*)([0-9].[0-9])(.[0-9]\n)', '\\2') }}"
+
+- debug:
+    msg: "This next step may take up to 10 minutes. Please be patient"
+
+- name: "Controller - Installing"
+  shell: |
+    timeout --foreground 10m \
+    ./install.sh \
+      --accept-license \
+      --configdb-volume-type '{{ nginx_controller_configdb_volume_type }}' \
+      --tsdb-volume-type '{{ nginx_controller_tsdb_volume_type }}' \
+      --smtp-host '{{ nginx_controller_smtp_host }}' \
+      --smtp-port '{{ nginx_controller_smtp_port | default(25) }}' \
+      --smtp-authentication '{{ nginx_controller_smtp_authentication }}' \
+      --smtp-use-tls '{{ nginx_controller_smtp_use_tls }}' \
+      --noreply-address '{{ nginx_controller_noreply_address }}' \
+      --fqdn '{{ nginx_controller_fqdn }}' \
+      --organization-name '{{ nginx_controller_organization_name }}' \
+      --admin-firstname '{{ nginx_controller_admin_firstname }}' \
+      --admin-lastname '{{ nginx_controller_admin_lastname }}' \
+      --admin-email '{{ nginx_controller_admin_email }}' \
+      --admin-password '{{ nginx_controller_admin_password }}' \
+      --self-signed-cert \
+      --overwrite-existing-configs \
+      --auto-install-docker \
+      --non-interactive
+  args:
+    chdir: "{{ nginx_controller_install_path }}/controller-installer"
+    creates: /opt/nginx-controller/k8s-namespace.yaml
+  register: output
+  environment:
+    CTR_CONFIGDB_INTERNAL: true
+
+- debug:
+    var: output.stdout_lines

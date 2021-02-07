@@ -1,0 +1,39 @@
+- name: Install NGINX Plus
+  remote_user: ubuntu
+  hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: true
+  vars:
+    nginx_controller_fqdn: controller.example.com
+    nginx_controller_user_email: "mholland@example.com"
+    nginx_controller_user_password: "Password10"
+    nginx_controller_validate_certs: false
+    nginx_controller_admin_email: "{{nginx_controller_user_email}}"
+    nginx_controller_admin_password: "{{nginx_controller_user_password}}"
+  vars_files:
+    - ctr_var_file.yaml
+
+  tasks:
+    - name: Stop Jenkins
+      service:
+        name: controller-agent
+        state: stopped
+
+    - name: Remove NGINX Plus from NGINX Controller
+      include_role:
+        name: nginxinc.nginx_controller_generate_token
+
+    - name: Remove NGINX+ Instances from controller
+      uri:
+        url: "https://{{ nginx_controller_fqdn }}/api/v1/infrastructure/locations/unspecified/instances/mholland-nginx-plus-{{nginx_plus_count}}.c.f5-gcs-4299-sales-se-nginx.internal"
+        method: "DELETE"
+        return_content: no
+        status_code: 204
+        validate_certs: "{{nginx_controller_validate_certs}}"
+        headers:
+          Content-Type: application/json
+          Cookie: "{{nginx_controller_auth_token}}"
+
+    

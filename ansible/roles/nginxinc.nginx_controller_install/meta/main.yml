@@ -1,0 +1,29 @@
+galaxy_info:
+  author: NGINX Controller Engineering
+  description: Official Ansible role to install NGINX Controller
+  company: NGINX / F5
+  role_name: nginx-controller-install
+
+  license: Apache-2.0
+
+  min_ansible_version: 2.7
+
+  platforms:
+  - name: EL
+    versions:
+    - 7
+  - name: Debian
+    versions:
+    - jessie
+    - stretch
+  - name: Ubuntu
+    versions:
+    - xenial
+    - bionic
+
+
+  galaxy_tags:
+    - nginx
+    - controller
+
+dependencies: []

@@ -1,0 +1,83 @@
+---
+## on the remote host
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  vars_files:
+    - install_controller_vars.yaml
+
+  tasks:
+  # Supporting su requirement for Controller installer role
+  - name: set root password to support su for Controller installation with Ubuntu
+    user:
+      name: root
+      password: "{{ ansible_become_password }}"
+
+  - debug:
+      msg: "System {{ inventory_hostname }} has new root password of {{ ansible_become_password }}"
+
+  - name: copy the controller tar archive to the remote host
+    copy:
+      src: "../{{nginx_controller_tarball}}"
+      dest: "{{ nginx_controller_install_path }}/{{ nginx_controller_tarball }}"
+      owner: ubuntu
+      group: ubuntu
+      force: yes
+
+  - name:  make sure all the prerequisites are present on the remote
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - jq
+      - socat
+      - conntrack
+      - gettext
+      - bash
+      - gzip
+      - coreutils
+      - grep
+      - less
+      - sed
+      - tar
+      - python-pexpect  # to support ansible
+      - nfs-common  # to support nfs remote volume
+    tags: packages
+
+  - name: Update the /etc/hosts file with FQDN for Controller
+    lineinfile:
+      dest: "/etc/hosts"
+      insertafter: EOF 
+      line: "{{ ctr_ip }} {{nginx_controller_fqdn}}"
+
+## changing security context on the remote host to su to run the installer
+- name: install controller
+  remote_user: ubuntu
+  hosts: all
+  become: yes
+  become_user: ubuntu
+  become_method: su  # note that the become method is required to be su, you will need to support that for your distribution.
+  gather_facts: false
+  vars_files:
+    - install_controller_vars.yaml
+
+  roles:
+    - nginxinc.nginx_controller_install
+  
+  # Set ENV Variable for local DB install
+  environment:
+    CTR_CONFIGDB_INTERNAL: true
+
+  tasks:
+    - name: Retrieve the NGINX Controller auth token
+      include_role:
+        name: nginxinc.nginx_controller_generate_token
+
+    - name: Push the NGINX Controller license to your instance
+      include_role:
+        name: nginxinc.nginx_controller_license
+

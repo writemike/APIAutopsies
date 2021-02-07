@@ -1,0 +1,49 @@
+---
+- name: Fail if required variables are not defined
+  assert:
+    that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
+  loop:
+    - nginx_controller_fqdn
+    - nginx_controller_api_key
+
+- name: COPY files/nginx-plus-api.conf /etc/nginx/conf.d/ necessary for process monitoring.
+  copy:
+    src: "files/nginx-plus-api.conf"
+    dest: "/etc/nginx/conf.d/nginx-plus-api.conf"
+    force: yes
+
+- name: Download the installer script from NGINX Controller
+  get_url:
+    url: "https://{{ nginx_controller_fqdn }}:8443/1.4/install/controller/"
+    dest: "{{ ansible_env.HOME }}/install.sh"
+    validate_certs: "{{ nginx_controller_validate_certs | default(false) }}"
+    force: yes
+  register: nginx_controller_return
+
+- name: Run the NGINX Controller agent installer
+  shell: |
+    API_KEY='{{ nginx_controller_api_key }}' \
+    {{ (nginx_controller_hostname | length > 0) | ternary('CONTROLLER_HOSTNAME=' + nginx_controller_hostname,'') }} \
+    {{ ((nginx_controller_hostname | length > 0) or (nginx_controller_instance_name | length > 0)) | ternary('STORE_UUID=True','') }} \
+    sh ./install.sh -y \
+    {{ (nginx_controller_location | length > 0) | ternary('-l ' + nginx_controller_location,'') }} \
+    {{ (nginx_controller_instance_name | length > 0) | ternary('-i ' + nginx_controller_instance_name,'') }}
+  args:
+    chdir: "{{ ansible_env.HOME }}"
+    creates: /var/log/nginx-controller/agent.log
+  register: nginx_controller_agent_install
+
+- name: Output agent install results
+  debug:
+    var: nginx_controller_agent_install.stdout_lines
+
+# - name: Restart NGINX
+#   service:
+#     name: nginx
+#     state: restarted
+
+- name: remove the install script
+  file:
+    path: "{{ ansible_env.HOME }}/install.sh"
+    state: absent
+ 

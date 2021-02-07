@@ -1,0 +1,22 @@
+---
+nginx_controller_install_path: "/home/ubuntu/"
+nginx_controller_tarball: "controller-installer-3.13.0.tar.gz"
+nginx_controller_fqdn: controller.example.com
+ansible_python_interpreter: /usr/bin/python3
+su_password: "Password10"
+ansible_become_password: "{{ su_password | password_hash('sha512') }}"
+nginx_controller_configdb_volume_type: local
+nginx_controller_tsdb_volume_type: local
+nginx_controller_smtp_host: "localhost"
+nginx_controller_smtp_authentication: false
+nginx_controller_smtp_use_tls: false
+nginx_controller_noreply_address: "noreply@example.com"
+nginx_controller_organization_name: "NGINX Demo"
+nginx_controller_admin_firstname: "Mike"
+nginx_controller_admin_lastname: "Holland"
+nginx_controller_admin_email: "mholland@example.com"
+nginx_controller_admin_password: 'Password10'
+nginx_controller_self_signed_cert: true
+nginx_controller_overwrite_existing_configs: true
+nginx_controller_license: "FNI-d76c714e-5911-49d7-b2e9-c566217edad3"
+#nginx_controller_license: "{{ lookup('file', 'license/controller_license.txt') | b64encode }}"

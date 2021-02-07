@@ -1,0 +1,74 @@
+- name: Install NGINX Plus
+  remote_user: ubuntu
+  hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: true
+  vars:
+    nginx_controller_fqdn: controller.example.com
+    nginx_controller_user_email: "mholland@example.com"
+    nginx_controller_user_password: "Password10"
+    nginx_controller_validate_certs: false
+    nginx_controller_admin_email: "{{nginx_controller_user_email}}"
+    nginx_controller_admin_password: "{{nginx_controller_user_password}}"
+  vars_files:
+    - ctr_var_file.yaml
+
+  tasks:
+    - name: Update the /etc/hosts file with FQDN for Controller
+      lineinfile:
+        dest: "/etc/hosts"
+        insertafter: EOF 
+        line: "{{ nginx_controller_ip }} {{nginx_controller_fqdn}}"
+
+    - name: Install NGINX App Protect
+      include_role:
+        name: nginxinc.nginx_app_protect
+      vars:
+        nginx_app_protect_license:
+          certificate: license/nginx-repo.crt
+          key: license/nginx-repo.key
+        nginx_app_protect_remove_license: true
+        nginx_app_protect_install_signatures: true
+        nginx_app_protect_install_threat_campaigns: true
+        nginx_app_protect_configure: true
+        nginx_app_protect_security_policy_template_enable: true
+        nginx_app_protect_security_policy_enforcement_mode: blocking
+        nginx_app_protect_log_policy_template_enable: true
+        nginx_app_protect_log_policy_filter_request_type: all
+        nginx_app_protect_conf_template_enable: false
+
+    - name: Add NGINX Plus to NGINX Controller
+      include_role:
+        name: nginxinc.nginx_controller_generate_token
+
+    - name: Get controller api key for agent registration
+      uri:
+        url: "https://{{ nginx_controller_fqdn }}/api/v1/platform/global"
+        method: "GET"
+        return_content: yes
+        status_code: 200
+        validate_certs: false
+        headers:
+          Cookie: "{{nginx_controller_auth_token}}"
+      register: ctrl_globals
+
+    - name: Copy api_key to a variable
+      set_fact:
+        api_key: "{{ctrl_globals.json.currentStatus.agentSettings.apiKey}}"
+
+    - name: install minimal support for python2 for Agent install script
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+        - python-minimal
+        - libxerces-c3.2
+
+    - name: install the agent
+      include_role:
+        name: nginxinc.nginx_controller_agent
+      vars:
+        nginx_controller_api_key: "{{ api_key }}"

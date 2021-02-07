@@ -1,0 +1,15 @@
+---
+# defaults file for ansible-controller
+
+db_port: "5432"
+tsdb_nfs_path: ""
+tsdb_nfs_host: ""
+tsdb_aws_volume_id: ""
+smtp_user: ""
+smtp_password: ""
+self_signed_cert: ""
+overwrite_existing_configs: ""
+auto_install_docker: ""
+apigw_cert: ""
+apigw_key: ""
+

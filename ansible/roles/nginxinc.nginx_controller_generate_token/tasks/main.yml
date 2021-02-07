@@ -1,0 +1,27 @@
+---
+- name: Fail if required variables are not defined
+  assert:
+    that: ("{{ item }} is defined") and ("{{ item }} | length > 0")
+  loop:
+    - nginx_controller_fqdn
+    - nginx_controller_user_email
+    - nginx_controller_user_password
+
+- name: Login to Controller
+  uri:
+    url: "https://{{ nginx_controller_fqdn }}/{{ nginx_controller_api_version }}/platform/login"
+    method: "POST"
+    body:
+      credentials:
+        type: "BASIC"
+        username: "{{ nginx_controller_admin_email }}"
+        password: "{{ nginx_controller_admin_password }}"
+    body_format: json
+    return_content: yes
+    status_code: 204
+    validate_certs: "{{ nginx_controller_validate_certs | default(false) }}"
+  register: controller_auth
+
+- name: Register token for use as cookie
+  set_fact:
+    nginx_controller_auth_token: "{{ controller_auth.set_cookie }}"

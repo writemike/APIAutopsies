@@ -1,0 +1,38 @@
+---
+galaxy_info:
+  author: Brian Ehlert
+  description: A role to install, configure, and upgrade the NGINX Controller agent alongside an NGINX Plus instance in a machine.
+  company: F5 Networks, Inc.
+  role_name: nginx_controller_agent
+
+  license: Apache License, Version 2.0
+
+  min_ansible_version: 2.7
+
+  platforms:
+    - name: Amazon
+      versions:
+        - 2017.09
+    - name: Amazon Linux 2
+      versions:
+        - any
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+    - name: EL
+      versions:
+        - 6
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+
+  galaxy_tags:
+    - nginx
+    - plus
+    - controller
+    - agent
+
+dependencies: []
