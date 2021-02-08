@@ -1,6 +1,6 @@
 # GKE specific variables
 prefix                    = "mholland"
-project_id                = "f5-gcs-4299-sales-se-nginx"
+project_id                = ""
 region                    = "australia-southeast1"
 zone                      = "australia-southeast1-a"
 plus_machine_type         = "f1-micro"
