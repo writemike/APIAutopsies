@@ -1,0 +1,754 @@
+{
+	"info": {
+		"_postman_id": "23dfb81a-f0ef-49bf-a10b-d8f19573d366",
+		"name": "NGINX Controller - API Autopsies Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Common Tasks",
+			"item": [
+				{
+					"name": "Login to Controller - admin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"credentials\": {\r\n\t\t\"type\": \"BASIC\",\r\n\t\t\"username\": \"{{username}}\",\r\n\t\t\"password\": \"{{password}}\"\r\n\t}\r\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/platform/login",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"platform",
+								"login"
+							]
+						},
+						"description": "Returns a cookie / authentication token\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JService - ADC",
+			"item": [
+				{
+					"name": "1) Create Env - example-env",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"metadata\": {\n        \"name\": \"example-env\",\n        \"displayName\": \"JService Demo Environment\",\n        \"description\": \"This environment demos API-M using the JService API\",\n        \"tags\": [\"jservice\", \"tag example\", \"example-env\"]\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				},
+				{
+					"name": "1.5) Upload Cert/Key Pairs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice.example.com\"\n  },\n  \"desiredState\": {\n    \"type\": \"PEM\",\n    \"privateKey\": \"-----BEGIN PRIVATE KEY-----\\n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\\n-----END PRIVATE KEY-----\\n\",\n    \"publicCert\": \"-----BEGIN CERTIFICATE-----\\nMIIFuzCCA6OgAwIBAgIUKB1ooQOgBDlNIOwIGd40zMoq9i0wDQYJKoZIhvcNAQELBQAwbTELMAkGA1UEBhMCQVUxDDAKBgNVBAgMA05TVzEPMA0GA1UEBwwGU3lkbmV5MQ4wDAYDVQQKDAVOR0lOWDEQMA4GA1UECwwHRXhhbXBsZTEdMBsGA1UEAwwUanNlcnZpY2UuZXhhbXBsZS5jb20wHhcNMjEwMjA1MTEyMTM3WhcNMjEwMzA3MTEyMTM3WjBtMQswCQYDVQQGEwJBVTEMMAoGA1UECAwDTlNXMQ8wDQYDVQQHDAZTeWRuZXkxDjAMBgNVBAoMBU5HSU5YMRAwDgYDVQQLDAdFeGFtcGxlMR0wGwYDVQQDDBRqc2VydmljZS5leGFtcGxlLmNvbTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAMo8wMBzkT2s4kePd408bPF+kco1Ecn4kgrMNvcNQDBXZDs76x+44Su1dp6eSXhXnkDnj05aV999KBH+Kcy4r++a+hD4783pB8QEVqgLmrpoUa0sIYpgUBDIUPib20ZA/812X8sf0ebXOiIL5okaur4y2fl4w+Z2CRP9P6cov9pCLc0MQ+Gaa+8xnu5v89S27TFRJeTAyVpkiZxYbbX7SNFZ047qD8xr8u/zOOV6D6M7WSt8nIYq4lZwbmLlTX9HG1DCfKOwcQyx+87AZDqda9oD7OYbKpxMruLwrBN629tOew/cW3VdWoPRq/6cLHmnbXbEnRWt0C7pBLzmPxNxHgDyD3kjwBsVszXCX6NfUCF0gPAJEoHrZOmtPSDNYtx2zzG6Xjr2pgVE2Qb+LxKqH73yz7AwqvVei6sxgcelHQLkhanYx5Ku+BZYYtJFTJsLEjYDRMSlTRitZN9wgyBm7Zr6CZj394lSnv5fqcBoD4wMQe28yYl5bfD274x4VHF4DYQxQzxLzlnvhzqAgHUHQYOlhONCs/rnzU03xMD/9S+LukTqqO+M3rvfQyIcO+vzYkVzLgzWzaAs7eqLyWY5RGy0Vrt1bjcssDDdtk6OTM3IThT6/ijOD8l2WqBa+TikzUnZ+RJ4WfHAtrJ/wvavh15mf0pTTVUhsVTPEmm9EP6xAgMBAAGjUzBRMB0GA1UdDgQWBBQitF2G9Lce6wMh1Rn+1XTwgwt9BzAfBgNVHSMEGDAWgBQitF2G9Lce6wMh1Rn+1XTwgwt9BzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQAwxA0iPBpK7qBTgkwC0AMxvYAfYf+fcZI4fqpfmrzHXDXm3KTm6wXznqUrvb22BEj3wQ7VpvMNfJId+o1+UksSiCePFHNkJj4hAFu75K10nXgUBZh+pR1EkuEYe+7NGSeUmg9/V6bms+dA/P+qaWis5WippT5yV5M6pPOhAKv5WTBCiiyX6mq+wpMkJxcsffbGA0orFOyXeIq0w0/gcr5ZGuAs0y3i9jI7R4h03o51hbKjc/kGBBCrlYrn6vnqSf0Od2b8NyDGOuTqCr/peTmKRZ9fxXRnAADRhfON00CYowKek461lhY5W8nA4UEriJ9vL4NIXT1it5ug/8iLxRhSdVZvOOgOXpxfEFoj8pDKITmLENpq+khEDg/1UkhAcRaC8GkPCYn7ypMFNa1exfxkgbxT8BKFduDxp51HLny3bu665CinPBkhMmQMoq2pf1Hfv49LNk7Hs/V5vWrCbjphreyNIdKWrhc4s5vXOe+J/0ZonS54110K+eWRHzNqFvBQ3yx/o/kGiwZvbYSnJqZARkQSI9cDggfvie0fzcV11NYW6FqpvnwIh5MAjBsKP9fydjz+8Nrt7Wwn/Gaxhm8JbGgqYvIBd6AtQNb1QTWP99NbEaCRSavyABJpKEhPpQ/iB1nqFDAnZX/wlgsJGVU+TcUF+eWTLrgMHqTapsnYfg==\\n-----END CERTIFICATE-----\\n\",\n    \"password\": \"\",\n    \"caCerts\": []\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/certs",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env",
+								"certs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2) Create Gateway - jservice.example.com",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice-gw\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"placement\": {\n        \"instanceRefs\": [\n          {\n            \"ref\": \"/infrastructure/locations/unspecified/instances/{{instance_name}}\"\n          }\n        ]\n      },\n      \"uris\": {\n        \"http://jservice.example.com\": {\n          \"matchMethod\": \"EXACT\"\n        }\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/gateways/jservice-gw",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env",
+								"gateways",
+								"jservice-gw"
+							]
+						},
+						"description": "Create or Add a certificate to the Controller"
+					},
+					"response": []
+				},
+				{
+					"name": "3) Create App - jservice.example.com",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"metadata\": {\n        \"name\": \"jservice-app\",\n        \"displayName\": \"JService Application\",\n        \"description\": \"REST API to query Jeopardy Questions\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/apps/jservice-app",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env",
+								"apps",
+								"jservice-app"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				},
+				{
+					"name": "4) Create Component - main (Enable)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/example-env/gateways/jservice-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/\": {}\n      }\n    },\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://jservice.io\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"jservice.io\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/apps/jservice-app/components/jservice-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env",
+								"apps",
+								"jservice-app",
+								"components",
+								"jservice-main-comp"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				},
+				{
+					"name": "5) Update Gateway - jservice.example.com",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice-gw\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"placement\": {\n        \"instanceRefs\": [\n          {\n            \"ref\": \"/infrastructure/locations/unspecified/instances/{{instance_name}}\"\n          }\n        ]\n      },\n      \"tls\": {\n        \"certRef\": {\n          \"ref\": \"/services/environments/example-env/certs/jservice.example.com\"\n        },\n        \"preferServerCipher\": \"DISABLED\",\n        \"sessionCache\": \"OFF\"\n      },\n      \"uris\": {\n        \"https://jservice.example.com\": {\n          \"matchMethod\": \"EXACT\"\n        }\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/gateways/jservice-gw",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env",
+								"gateways",
+								"jservice-gw"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REST Countries - API-M",
+			"item": [
+				{
+					"name": "1) Create Env - prod-env",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"metadata\": {\n        \"name\": \"prod-env\",\n        \"displayName\": \"Prod Demo Environment\",\n        \"description\": \"This environment is for Production APIs\",\n        \"tags\": [\"prod\", \"restcountries\"]\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				},
+				{
+					"name": "1.5) Upload Cert/Key Pairs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc.example.com\"\n  },\n  \"desiredState\": {\n    \"type\": \"PEM\",\n    \"privateKey\": \"-----BEGIN PRIVATE KEY-----\\n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\\n-----END PRIVATE KEY-----\\n\",\n    \"publicCert\": \"-----BEGIN CERTIFICATE-----\\nMIIFpTCCA42gAwIBAgIUGgLl86aTPWbPudIHjSe0Ac7ipAQwDQYJKoZIhvcNAQELBQAwYjELMAkGA1UEBhMCQVUxDDAKBgNVBAgMA05TVzEPMA0GA1UEBwwGU3lkbmV5MQ4wDAYDVQQKDAVOR0lOWDELMAkGA1UECwwCU0UxFzAVBgNVBAMMDnJjLmV4YW1wbGUuY29tMB4XDTIxMDIxNTEwMjAyN1oXDTIxMDMxNzEwMjAyN1owYjELMAkGA1UEBhMCQVUxDDAKBgNVBAgMA05TVzEPMA0GA1UEBwwGU3lkbmV5MQ4wDAYDVQQKDAVOR0lOWDELMAkGA1UECwwCU0UxFzAVBgNVBAMMDnJjLmV4YW1wbGUuY29tMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA7Q1/gsGRbrQ7DrMufdImSnA0DKc0d6YRfxyDZz3iuua+ectjZgEiLbcXdcwfoSMDN7jgjMB+xHt6XNhClnsB/BECO8OhTcLdh+8O2hqaQRnzs3LJ93o0CSW9XZe3QsfVPZi0VkJPYTjpVBrZxMTdJrBLvrEp+h24cWlOjLA6WhBH6DpmhwWoYo8a4YvlshvEP3NiWdd114c5uS6LoVH6Yxh/+xs4VGkEwQOMjI1zLgS4EI0c7I1JEsQD5MD4zZ5jjhEthJFDmz24b1/Paqp2db9RfdUyA12c+CZ4iTCLQXH4cm+muVVUADI0UaghNlHXy3ZP6fwSmigI/BiAC0r1V/AGy4LiO2q0gyza5yaOErFX0NjMziRNDjSnawfVlE5Hcmoir4nJrY4SNFsaEHl0Gd4UNqlFKG0BEziEzhJNRYgetl0QzWSCVKp/A/e55M99ECBxdELIcootUOKxO3K5WlK2vko0TkOejAiGEA8d4KdAZanZpXeyg0BBtegVz/d4Q+ixcjjqBoc5JnufA5r3VYfYP5PHnixavNi9DXylQP0nvf6/QVDSRfJRM6pSF5id25DmRR+awVAs9f/3+/j3bZgoAsg/6YPLu+C6SlYBIdajVbtwXIvk54GM70AB86d4aQEFobStXnlfVQSPVLMl8VwCgwuJSDss5EtkjCusGa8CAwEAAaNTMFEwHQYDVR0OBBYEFC5SQZORuhvD/3+VCwiuuWMnoDq4MB8GA1UdIwQYMBaAFC5SQZORuhvD/3+VCwiuuWMnoDq4MA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBAKAV9UoNtQv48EGc1x5OIFR5hlbumzMWbfq4hDwu+9edtaivP9Me9DFLzn5VYUvV83f69WD0TOytoeYevl9H7kQFOEvuuFGgNsQl95pGOLcESBq+63VsDYXG70bCbrKHlMu/KpzdIEBiJsOmlbCG/+5KmZurSVL/9xD/CWmODnjtthyfENH5ceneplIzDvLvKvwmA64vUk7ELubvRnbrIhUWR/JxVYd0GtKaqTMq1/ZbvAGYuCCJ+yt/ONfqkkBm689bgy5R3TPU+hyTVRcyoAhbsGP28k1LQ+knHd+Mydu/3aS9yBRDiVCm5m9j6cFrU0RyPYpLmHD+g9wfWH4F2Eo7n8I8/FankXe5cdZRUHZyjMgaVNYiPEAmKsEHuZ8RRvFy6LbHiTBLqbSaQC+ig0Y6728kobUMM/bwGPH6LrArNBd3aBwYxlgIGi4E+0M6z5wofC6aelvqnP0xv4keR8QX/RuX9lvlNwmKS0W8jZmcsBY9oCqzKK4yOiGOgSfgVWDisUw5ZRK0k6IZ5HmjxaV+iYXIvviDliZcJwh3Or3ajgeBJA8Q61Q5EkzCje3s1uxE24hYZYux642u5IDgZ4t12JfsEVKk6EmsTq5BU0ozBFnnGSA6jiMnLfxxolkapvMNRCp+n5dDSab2A0uGlnEY+9wi04NsmXoIGnyMHvlP\\n-----END CERTIFICATE-----\\n\",\n    \"password\": \"\",\n    \"caCerts\": []\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/certs",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"certs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2) Create Gateway - rc-gw",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-gw\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"placement\": {\n        \"instanceRefs\": [\n          {\n            \"ref\": \"/infrastructure/locations/unspecified/instances/{{instance_name_2}}\"\n          }\n        ]\n      },\n      \"tls\": {\n        \"certRef\": {\n          \"ref\": \"/services/environments/prod-env/certs/rc.example.com\"\n        },\n        \"preferServerCipher\": \"DISABLED\",\n        \"sessionCache\": \"OFF\"\n      },\n      \"uris\": {\n        \"https://rc.example.com\": {\n          \"matchMethod\": \"EXACT\"\n        }\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/gateways/rc-gw",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"gateways",
+								"rc-gw"
+							]
+						},
+						"description": "Create or Add a certificate to the Controller"
+					},
+					"response": []
+				},
+				{
+					"name": "2.5) Create Gateway - devport-rc-gw",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"devport-rc-gw\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"placement\": {\n        \"instanceRefs\": [\n          {\n            \"ref\": \"/infrastructure/locations/unspecified/instances/{{instance_name_3}}\"\n          }\n        ]\n      },\n      \"uris\": {\n        \"http://devport-rc.example.com\": {\n          \"matchMethod\": \"EXACT\"\n        }\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/gateways/devport-rc-gw",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"gateways",
+								"devport-rc-gw"
+							]
+						},
+						"description": "Create or Add a certificate to the Controller"
+					},
+					"response": []
+				},
+				{
+					"name": "3) Create App - rc-app",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"metadata\": {\n        \"name\": \"rc-app\",\n        \"displayName\": \"REST Countries Application\",\n        \"description\": \"Logical Collection of Country Information\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5) API Definition - RESTCountries v1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/mholland/Documents/NGINX Controller/APIAutopsies/code/ansible/restcountries-openapi-1.0.0.json"
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/api-definitions/restcountries/versions/1.0.0/import",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"api-definitions",
+								"restcountries",
+								"versions",
+								"1.0.0",
+								"import"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6) Publish API - RESTCountries",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"restcountries-api\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"apiDefinitionVersionRef\": {\n      \"ref\": \"/services/api-definitions/restcountries/versions/1.0.0\"\n    },\n    \"gatewayRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n      }\n    ],\n    \"basePath\": \"/\",\n    \"stripWorkloadBasePath\": true\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"published-apis",
+								"restcountries-api"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4) Create Component - RC API",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/all\": {}\n      }\n    },\n    \"publishedApiRefs\": [\n        {\n            \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n        }\n    ],\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"components",
+								"rc-main-comp"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				},
+				{
+					"name": "7) Update API Definition - RESTCountries v2",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/mholland/Documents/NGINX Controller/APIAutopsies/code/ansible/restcountries-openapi-2.0.0.json"
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/api-definitions/restcountries/versions/2.0.0/import",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"api-definitions",
+								"restcountries",
+								"versions",
+								"2.0.0",
+								"import"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8) Create Dev Portal - RESTCountries",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-devport\",\n    \"description\": \"Development Portal for the REST Countries API\",\n    \"tags\": [],\n    \"kind\": \"devportal\"\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/devport-rc-gw\"\n        }\n      ]\n    },\n    \"devPortalTheme\": {\n      \"customConfig\": {\n        \"fonts\": {\n          \"assignments\": {\n            \"headings\": {\n              \"kind\": \"google-web-font\",\n              \"value\": \"Lato\"\n            },\n            \"body\": {\n              \"kind\": \"google-web-font\",\n              \"value\": \"Fira+Sans\"\n            },\n            \"code\": {\n              \"kind\": \"google-web-font\",\n              \"value\": \"IBM+Plex+Mono\"\n            },\n            \"cta\": {\n              \"kind\": \"google-web-font\",\n              \"value\": \"Lato\"\n            },\n            \"special\": {\n              \"kind\": \"google-web-font\",\n              \"value\": \"Lato\"\n            }\n          }\n        },\n        \"primary\": {\n          \"color\": {\n            \"primary\": \"#3b43be\",\n            \"accent\": \"#3b43be\",\n            \"fill\": \"#ffffff\",\n            \"ink\": \"#171d21\"\n          }\n        },\n        \"secondary\": {\n          \"color\": {\n            \"primary\": \"#3b43be\",\n            \"accent\": \"#ffffff\",\n            \"fill\": \"#f7f8fa\",\n            \"ink\": \"#2c3039\",\n            \"gray\": \"#272938\"\n          }\n        }\n      },\n      \"brandName\": \"REST Countries Inc.\",\n      \"logo\": \"data:image/png;base64,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\"\n    },\n    \"publishedApiRefs\": [],\n    \"devPortalType\": \"private\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/devportals",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"devportals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9) Update Publish API - RESTCountries",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"restcountries-api\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"apiDefinitionVersionRef\": {\n      \"ref\": \"/services/api-definitions/restcountries/versions/2.0.0\"\n    },\n    \"gatewayRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n      }\n    ],\n    \"devportalRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env/devportals/rc-devport\"\n      }\n    ],\n    \"basePath\": \"/\",\n    \"stripWorkloadBasePath\": true\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"published-apis",
+								"restcountries-api"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10) Update Component - RC API",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/all\": {},\n        \"/rest/v2/lang/{lang}\": {},\n        \"/rest/v2/currency/{currency}\": {},\n        \"/rest/v2/alpha/{alphacode}\": {}\n      }\n    },\n    \"publishedApiRefs\": [\n        {\n            \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n        }\n    ],\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://jservice.io\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"components",
+								"rc-main-comp"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "controller_fqdn",
+			"value": "controller.example.com",
+			"type": "string"
+		},
+		{
+			"key": "instance_name",
+			"value": "example_one",
+			"type": "string"
+		}
+	]
+}
