@@ -205,7 +205,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/example-env/gateways/jservice-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/\": {}\n      }\n    },\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://jservice.io\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"jservice.io\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/example-env/gateways/jservice-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/\": {}\n      }\n    },\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://jservice.io\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"jservice.io\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": true,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/apps/jservice-app/components/jservice-main-comp",
@@ -532,7 +532,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/all\": {}\n      }\n    },\n    \"publishedApiRefs\": [\n        {\n            \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n        }\n    ],\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/all\": {}\n      }\n    },\n    \"publishedApiRefs\": [\n        {\n            \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n        }\n    ],\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"rc-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
@@ -692,7 +692,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/all\": {},\n        \"/rest/v2/lang/{lang}\": {},\n        \"/rest/v2/currency/{currency}\": {},\n        \"/rest/v2/alpha/{alphacode}\": {}\n      }\n    },\n    \"publishedApiRefs\": [\n        {\n            \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n        }\n    ],\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://jservice.io\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/all\": {},\n        \"/rest/v2/lang/{lang}\": {},\n        \"/rest/v2/currency/{currency}\": {},\n        \"/rest/v2/alpha/{alphacode}\": {}\n      }\n    },\n    \"publishedApiRefs\": [\n        {\n            \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n        }\n    ],\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"rc-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
@@ -713,6 +713,363 @@
 							]
 						},
 						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-M Security Updates",
+			"item": [
+				{
+					"name": "1) Create Identity Provider",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jwt-rs512\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"environmentRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env\"\n      }\n    ],\n    \"identityProvider\": {\n      \"type\": \"JWT\",\n      \"jwkFile\": {\n        \"type\": \"INLINE\",\n        \"keys\": [\n          {\n            \"alg\": \"RS512\",\n            \"d\": \"MrjQ1ES7KEJU_t0U0nbEm9himOauD8CKZcO8gRDY716WoXzGnCYhiKjQHa2_nmMnu8OFeqJLCrjOYylvvakVq8dftwleS4vfsIpDkDNdRvR8ObscGSgQQVeTWmkXZLgtLtp48E1qkw3EevjAaT2deN9AvvnR9axMCKrWnMhS1CSCO6C36NJU6gGY_T91yVput5oF9CZXjXM9pDEyyKvsrsLfBnzMvfSX18ePa3DbbHlUvEDUN2bXDL6hJBJDzP8ao0hCbW1iTJWBgpBPKecehi-P9anj_DLmzaIzY-Mj4mareRZg6AR4HlxkcVRZKh1gymlmoEasiFn6cBR-1iyOQQ\",\n            \"dp\": \"p6reX3VJkMIJ12JLiVPijA2pNO_aiynxJGrIvx97059ZJIkagBy2UKcmr34SxFwAJOfDhaFpQdMMtcdRloqSwSbcXukzIrowlLV0gFgfRCZDBYLyjnc1OTzK-cs-npIJF-ymu1dAcvrp12RnSzAvDfZ9UBcRJBIDLAg7A_XqiUE\",\n            \"dq\": \"FRAVVApJ3WXcud01NDoex1h_Mq2ibFU0sxBh40p-Fu0VqlVYwuI6U_GxnvDyVsouagWkIg8DGHUHbP_IJLTeqWgeQ18fodRvogoFZkqbBPCUYbkwMNyERreR7wWdnETEKhETes4CF0g_l36Zv9fFbLKqc54HdvIjBkmZNRuOKIE\",\n            \"e\": \"AQAB\",\n            \"kid\": \"GWdt0zBmg7i4NKGcrqkZ0x6JRS_5f4rnF3yEZXGrJAc\",\n            \"kty\": \"RSA\",\n            \"n\": \"gX78_8Ga2LPNCATS29_rH4svEG2HtpY19JzLQJOyNwE8kztCSbnPCrG4x5fHKCNTGhnmz3htblEb-7ClYPaPIyJmn51Igsi5N7om6xEHOTOCzfNAzjKiuqXflqcKkbed8D1ZpIOCWSjdFTbdIqAmM06U0Lwiil09-uwv3YYMsKLOEeX-dRhRykVVGmlCgxdZKO9hBzQkNTjMTjMfNMRFElYgmiToBMzXmCDk1WPWh4a89nGKaukEAoOLcxAQsfMLkFKPrtCmdyep8FhBWsnh5kuHrb8RDDLFutODQtih36s3NqDhori0LxTHJsb--A6qm9EB0LlgrPvmaBishFmY5Q\",\n            \"p\": \"t0l4oZh2obKjH4xGsaIKYnOwwiO61mlV8POwpyYriLC7w3oWCe_40KR7Ezf2_fHx7f83VELhv1otiim1HFZC3kpSsYXIKgGV5GyImV3wrhs49kFq_0pH8bq9e7ArFZejQx22yy3TXI47PpMolMR3sOhXNMNEgWn_TvW2rMniEl0\",\n            \"q\": \"tN6Jh8Tk4wJ8gJn_gu3aeyVAPZziR6KmposrDuflNpSMUwTvGiEuXLapE_GNaImRC_Fykp8ITQTTheCCB2nXJ2fWhhWReW2IiS3eMvxJgs3dMUszUooZ3pYGqU9RGmCeSKDsioPryIgDNiUSu1rgfD8IQtVvzENrnr8LOh88yCk\",\n            \"qi\": \"tUVZIHTVuBL7lxr6_55N70STPbt_SDmZorWaOw0QdHxe05ucwp8YD7NDv8Tu22dYR78omqrtYqrAUPN3xWikRfg93EeEI_oDXMi01xTaB3zn91n1y6oNdFwHctjk2xYttMZmHNGYv-ED7kzwZmFT_oAyMggjqqhJ7NLF0HViUZ8\",\n            \"use\": \"sig\"\n          }\n        ]\n      }\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/security/identity-providers/jwt-rs512",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"security",
+								"identity-providers",
+								"jwt-rs512"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2) Add JWT Auth to Component",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"rc-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/all\": {},\n        \"/rest/v2/alpha/{alphacode}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/currency/{currency}\": {},\n        \"/rest/v2/lang/{lang}\": {},\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {}\n      }\n    },\n    \"logging\": {\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      },\n      \"errorLog\": \"DISABLED\"\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"publishedApiRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n      }\n    ],\n    \"security\": {\n      \"identityProviderRefs\": [\n        {\n          \"ref\": \"/security/identity-providers/jwt-rs512\"\n        }\n      ],\n      \"jwtClientAuth\": {\n        \"keyLocation\": \"BEARER\"\n      },\n      \"strategyRef\": {\n        \"ref\": \"/services/strategies/balanced_default\"\n      },\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"components",
+								"rc-main-comp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JWT Auth Request - admin: false",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzUxMiIsImtpZCI6IkdXZHQwekJtZzdpNE5LR2NycWtaMHg2SlJTXzVmNHJuRjN5RVpYR3JKQWMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE1MTYyMzkwMjJ9.EFTaGWQprfkLpGD7nz9fG-hB648VN6TVYh_foRmDBqxzfgOagCC531EGxRGG-UKJsYL9wAA-61VSAe7_o0-SVsntQVOb0zQX2rNEunI1KSTi2le845CHLcsaiLdrMUk7ofMmV8ZKNFYZd9Es1H5GFCT10Yd9gwAKnTJMe7ePX0VQhrhJw_O0A8aaCRgh1iZoUTSZ7RsP9wFCyZtVXXczrlDmvPnyTEDjP1g7dozO5EAOkn06X88Qy22hJxxNLbn_mwk3LdbWhyoa2Hu4AkrsJn_dRMd5Sba5CgodtS1hBQZfVB8Kk0R6KhfqQcy3iB4bgvNEFhIAn2lM5F0Yout77Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://rc.example.com/rest/v2/name/united?fields=name",
+							"protocol": "https",
+							"host": [
+								"rc",
+								"example",
+								"com"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"name",
+								"united"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3) Add Conditional Auth to Component",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"rc-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/all\": {},\n        \"/rest/v2/alpha/{alphacode}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/currency/{currency}\": {},\n        \"/rest/v2/lang/{lang}\": {},\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {}\n      }\n    },\n    \"logging\": {\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      },\n      \"errorLog\": \"DISABLED\"\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"publishedApiRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n      }\n    ],\n    \"security\": {\n      \"conditionalAuthPolicies\": {\n        \"policy_1\": {\n          \"action\": \"ALLOW\",\n          \"comparisonType\": \"EQUALS\",\n          \"comparisonValues\": [\n            \"true\"\n          ],\n          \"sourceType\": \"JWT_CLAIM\",\n          \"sourceKey\": \"admin\",\n          \"denyStatusCode\": 403\n        }\n      },\n      \"identityProviderRefs\": [\n        {\n          \"ref\": \"/security/identity-providers/jwt-rs512\"\n        }\n      ],\n      \"jwtClientAuth\": {\n        \"keyLocation\": \"BEARER\"\n      },\n      \"strategyRef\": {\n        \"ref\": \"/services/strategies/balanced_default\"\n      },\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"components",
+								"rc-main-comp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JWT Auth Request - admin: true",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzUxMiIsImtpZCI6IkdXZHQwekJtZzdpNE5LR2NycWtaMHg2SlJTXzVmNHJuRjN5RVpYR3JKQWMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.CiS_jt7ng6xJvwqSas0N3ht-OGHhi3nZNI4zKIbXvdSjEPiQ_z_tg30DXpbNIxGK4RDKwIRQms2FltSvcTXSIfKidkl4RkuKhFoqf-YXosDvQWRa-TYqhZNMm6i8HXYmSCDi36nZf0rdwT2aeCgM3YEVsCYQql1HoLFpgJSZVSX7DVmFQesgNqVb2rzCaykzqZrwutNljnyJYJ2NdoPluYD1lb9miCxI8W1hk8-jsvGKhsswZD7PR-HFHQSoYDojLGMylQRh59HjpkElIDsEhrYRN-C_S36roBmhzstJ9NK37RPzEFEb7iwaPPvBI1r7zI_ffNkRkoKKx003BrxE0w",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://rc.example.com/rest/v2/name/united?fields=name",
+							"protocol": "https",
+							"host": [
+								"rc",
+								"example",
+								"com"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"name",
+								"united"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4) Add Rate-Limit to Component Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"rc-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"rc-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://restcountries.eu\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/prod-env/gateways/rc-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/rest/v2/all\": {},\n        \"/rest/v2/alpha/{alphacode}\": {},\n        \"/rest/v2/capital/{capital}\": {},\n        \"/rest/v2/currency/{currency}\": {},\n        \"/rest/v2/lang/{lang}\": {},\n        \"/rest/v2/name/{name}\": {},\n        \"/rest/v2/region/{region}\": {}\n      }\n    },\n    \"logging\": {\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      },\n      \"errorLog\": \"DISABLED\"\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"restcountries.eu\"\n        }\n      ]\n    },\n    \"publishedApiRefs\": [\n      {\n        \"ref\": \"/services/environments/prod-env/apps/rc-app/published-apis/restcountries-api\"\n      }\n    ],\n    \"security\": {\n      \"rateLimits\": {\n        \"policy_1\": {\n          \"rate\": \"10r/m\",\n          \"burstBeforeReject\": 0,\n          \"statusCode\": 429,\n          \"key\": \"$request_uri_path\"\n        }\n      },\n      \"conditionalAuthPolicies\": {\n        \"policy_1\": {\n          \"action\": \"ALLOW\",\n          \"comparisonType\": \"EQUALS\",\n          \"comparisonValues\": [\n            \"true\"\n          ],\n          \"sourceType\": \"JWT_CLAIM\",\n          \"sourceKey\": \"admin\",\n          \"denyStatusCode\": 403\n        }\n      },\n      \"identityProviderRefs\": [\n        {\n          \"ref\": \"/security/identity-providers/jwt-rs512\"\n        }\n      ],\n      \"jwtClientAuth\": {\n        \"keyLocation\": \"BEARER\"\n      },\n      \"strategyRef\": {\n        \"ref\": \"/services/strategies/balanced_default\"\n      },\n      \"waf\": {\n        \"isEnabled\": false,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/prod-env/apps/rc-app/components/rc-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"prod-env",
+								"apps",
+								"rc-app",
+								"components",
+								"rc-main-comp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ADC Security Updates",
+			"item": [
+				{
+					"name": "1) Update Component - JService WAF",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"metadata\": {\n    \"name\": \"jservice-main-comp\",\n    \"tags\": []\n  },\n  \"desiredState\": {\n    \"ingress\": {\n      \"gatewayRefs\": [\n        {\n          \"ref\": \"/services/environments/example-env/gateways/jservice-gw\"\n        }\n      ],\n      \"uris\": {\n        \"/\": {}\n      }\n    },\n    \"backend\": {\n      \"ntlmAuthentication\": \"DISABLED\",\n      \"preserveHostHeader\": \"DISABLED\",\n      \"workloadGroups\": {\n        \"jservice-uri-wg\": {\n          \"loadBalancingMethod\": {\n            \"type\": \"ROUND_ROBIN\"\n          },\n          \"uris\": {\n            \"http://jservice.io\": {\n              \"isBackup\": false,\n              \"isDown\": false,\n              \"isDrain\": false\n            }\n          },\n          \"dnsServiceDiscovery\": {\n            \"servers\": [\n              \"1.1.1.1:53\"\n            ]\n          }\n        }\n      }\n    },\n    \"programmability\": {\n      \"requestHeaderModifications\": [\n        {\n          \"action\": \"ADD\",\n          \"headerName\": \"Host\",\n          \"headerValue\": \"jservice.io\"\n        }\n      ]\n    },\n    \"logging\": {\n      \"errorLog\": \"DISABLED\",\n      \"accessLog\": {\n        \"state\": \"DISABLED\"\n      }\n    },\n    \"security\": {\n      \"waf\": {\n        \"isEnabled\": true,\n        \"isMonitorOnly\": false,\n        \"signatureOverrides\": {}\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{controller_fqdn}}/api/v1/services/environments/example-env/apps/jservice-app/components/jservice-main-comp",
+							"protocol": "https",
+							"host": [
+								"{{controller_fqdn}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"environments",
+								"example-env",
+								"apps",
+								"jservice-app",
+								"components",
+								"jservice-main-comp"
+							]
+						},
+						"description": "Defining a Gateway.  Associate an instance, configure ingress on this Gateway to a specific URI"
+					},
+					"response": []
+				},
+				{
+					"name": "JService Request - Clean",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jservice.example.com/api/random?count=2",
+							"protocol": "https",
+							"host": [
+								"jservice",
+								"example",
+								"com"
+							],
+							"path": [
+								"api",
+								"random"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JService Request - Script",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jservice.example.com/api/random?<script>Alert</script>",
+							"protocol": "https",
+							"host": [
+								"jservice",
+								"example",
+								"com"
+							],
+							"path": [
+								"api",
+								"random"
+							],
+							"query": [
+								{
+									"key": "<script>Alert</script>",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JService Request - Parameter Validation",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Connection",
+								"value": "close",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://jservice.example.com/api/random?count=x",
+							"protocol": "https",
+							"host": [
+								"jservice",
+								"example",
+								"com"
+							],
+							"path": [
+								"api",
+								"random"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "x"
+								}
+							]
+						}
 					},
 					"response": []
 				}

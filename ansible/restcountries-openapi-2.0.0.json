@@ -1,0 +1,594 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Restcountries",
+    "description": "API for restcountries.eu",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://restcountries.eu/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Rest",
+      "description": "Operations about Rest"
+    }
+  ],
+  "paths": {
+    "/rest/v2/name/{name}": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get By Country Name",
+        "operationId": "GetByCountryName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "CountryName",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "South Africa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/v2/region/{region}": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get By Region",
+        "operationId": "GetByRegion",
+        "parameters": [
+          {
+            "name": "region",
+            "in": "path",
+            "description": "Region",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Europe"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/v2/capital/{capital}": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get By Capital",
+        "operationId": "GetByCapital",
+        "parameters": [
+          {
+            "name": "capital",
+            "in": "path",
+            "description": "capital",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Pretoria"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/v2/lang/{lang}": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get By Language",
+        "operationId": "GetByLang",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "lang",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "en"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/v2/currency/{currency}": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get By Currency",
+        "operationId": "GetByCurrency",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "description": "currency",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "en"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/v2/alpha/{alphacode}": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get By Alphacode",
+        "operationId": "GetByAlphacode",
+        "parameters": [
+          {
+            "name": "alphacode",
+            "in": "path",
+            "description": "alphacode",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ZA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/v2/all": {
+      "get": {
+        "tags": [
+          "Rest"
+        ],
+        "description": "Get All",
+        "operationId": "GetAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Countries": {
+        "required": [
+          "alpha2Code"
+        ],
+        "type": "object",
+        "properties": {
+          "alpha2Code": {
+            "type": "string"
+          },
+          "alpha3Code": {
+            "type": "string"
+          },
+          "altSpellings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "area": {
+            "type": "number",
+            "format": "float"
+          },
+          "borders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "callingCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "capital": {
+            "type": "string"
+          },
+          "cioc": {
+            "type": "string"
+          },
+          "currencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Currencies"
+            }
+          },
+          "demonym": {
+            "type": "string"
+          },
+          "flag": {
+            "type": "string"
+          },
+          "gini": {
+            "type": "number",
+            "format": "float"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Languages"
+            }
+          },
+          "latlng": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "nativeName": {
+            "type": "string"
+          },
+          "numericCode": {
+            "type": "string"
+          },
+          "population": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "region": {
+            "type": "string"
+          },
+          "regionalBlocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegionalBlocs"
+            }
+          },
+          "subregion": {
+            "type": "string"
+          },
+          "timezones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topLevelDomain": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "translations": {
+            "$ref": "#/components/schemas/Translations"
+          }
+        },
+        "description": "Model for Countries"
+      },
+      "GetAll": {
+        "required": [
+          "alpha2Code"
+        ],
+        "type": "object",
+        "properties": {
+          "alpha2Code": {
+            "type": "string"
+          },
+          "alpha3Code": {
+            "type": "string"
+          },
+          "altSpellings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "area": {
+            "type": "number",
+            "format": "float"
+          },
+          "borders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "callingCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "capital": {
+            "type": "string"
+          },
+          "cioc": {
+            "type": "string"
+          },
+          "currencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Currencies"
+            }
+          },
+          "demonym": {
+            "type": "string"
+          },
+          "flag": {
+            "type": "string"
+          },
+          "gini": {
+            "type": "number",
+            "format": "float"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Languages"
+            }
+          },
+          "latlng": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "nativeName": {
+            "type": "string"
+          },
+          "numericCode": {
+            "type": "string"
+          },
+          "population": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "region": {
+            "type": "string"
+          },
+          "regionalBlocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegionalBlocs"
+            }
+          },
+          "subregion": {
+            "type": "string"
+          },
+          "timezones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topLevelDomain": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "translations": {
+            "$ref": "#/components/schemas/Translations"
+          }
+        },
+        "description": "Model for GetAll"
+      },
+      "RegionalBlocs": {
+        "required": [
+          "acronym"
+        ],
+        "type": "object",
+        "properties": {
+          "acronym": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "otherAcronyms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "otherNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Model for RegionalBlocs"
+      },
+      "Translations": {
+        "required": [
+          "br"
+        ],
+        "type": "object",
+        "properties": {
+          "br": {
+            "type": "string"
+          },
+          "de": {
+            "type": "string"
+          },
+          "es": {
+            "type": "string"
+          },
+          "fa": {
+            "type": "string"
+          },
+          "fr": {
+            "type": "string"
+          },
+          "hr": {
+            "type": "string"
+          },
+          "it": {
+            "type": "string"
+          },
+          "ja": {
+            "type": "string"
+          },
+          "nl": {
+            "type": "string"
+          },
+          "pt": {
+            "type": "string"
+          }
+        },
+        "description": "Model for Translations"
+      },
+      "Languages": {
+        "required": [
+          "iso639_1"
+        ],
+        "type": "object",
+        "properties": {
+          "iso639_1": {
+            "type": "string"
+          },
+          "iso639_2": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nativeName": {
+            "type": "string"
+          }
+        },
+        "description": "Model for Languages"
+      },
+      "Currencies": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          }
+        },
+        "description": "Model for Currencies"
+      }
+    }
+  }
+}
